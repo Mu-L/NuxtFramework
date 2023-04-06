@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue'
 import type { PropType, SetupContext } from 'vue'
-import { useHead } from './composables'
+import { useHead } from '@unhead/vue'
 import type {
   CrossOrigin,
   FetchPriority,
@@ -26,7 +26,7 @@ const globalProps = {
     type: Boolean,
     default: undefined
   },
-  class: String,
+  class: [String, Object, Array],
   contenteditable: {
     type: Boolean,
     default: undefined

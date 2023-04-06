@@ -1,8 +1,12 @@
-import { reactive, h } from 'vue'
+import { reactive, h, isReadonly } from 'vue'
 import { parseURL, stringifyParsedURL, parseQuery, stringifyQuery, withoutBase, isEqual, joinURL } from 'ufo'
 import { createError } from 'h3'
-import { defineNuxtPlugin, clearError, navigateTo, showError, useRuntimeConfig, useState } from '..'
-import { callWithNuxt } from '../nuxt'
+import { callWithNuxt, defineNuxtPlugin, useRuntimeConfig } from '../nuxt'
+import { clearError, showError } from '../composables/error'
+import { navigateTo } from '../composables/router'
+import { useState } from '../composables/state'
+import { useRequestEvent } from '../composables/ssr'
+
 // @ts-ignore
 import { globalMiddleware } from '#build/middleware'
 
@@ -26,6 +30,8 @@ interface Route {
   redirectedFrom: Route | undefined
   /** Merged `meta` properties from all of the matched route records. */
   meta: Record<string, any>
+  /** compatibility type for vue-router */
+  matched: never[]
 }
 
 function getRouteFromPath (fullPath: string | Partial<Route>) {
@@ -222,8 +228,8 @@ export default defineNuxtPlugin<{ route: Route, router: Router }>((nuxtApp) => {
   nuxtApp.hooks.hookOnce('app:created', async () => {
     router.beforeEach(async (to, from) => {
       to.meta = reactive(to.meta || {})
-      if (nuxtApp.isHydrating) {
-        to.meta.layout = initialLayout.value ?? to.meta.layout
+      if (nuxtApp.isHydrating && initialLayout.value && !isReadonly(to.meta.layout)) {
+        to.meta.layout = initialLayout.value
       }
       nuxtApp._processingMiddleware = true
 
@@ -250,7 +256,9 @@ export default defineNuxtPlugin<{ route: Route, router: Router }>((nuxtApp) => {
 
     await router.replace(initialURL)
     if (!isEqual(route.fullPath, initialURL)) {
-      await callWithNuxt(nuxtApp, navigateTo, [route.fullPath])
+      const event = await callWithNuxt(nuxtApp, useRequestEvent)
+      const options = { redirectCode: event.node.res.statusCode !== 200 ? event.node.res.statusCode || 302 : 302 }
+      await callWithNuxt(nuxtApp, navigateTo, [route.fullPath, options])
     }
   })
 

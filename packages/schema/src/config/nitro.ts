@@ -22,7 +22,7 @@ export default defineUntypedSchema({
    *
    * @experimental This is an experimental feature and API may change in the future.
    *
-   * @see https://nitro.unjs.io/config/#routes
+   * @see https://nitro.unjs.io/config/#routerules
    *
    * @type {typeof import('nitropack')['NitroConfig']['routeRules']}
    */
@@ -38,7 +38,7 @@ export default defineUntypedSchema({
    * - middleware: Specifies whether it is a middleware handler.
    * - lazy: Specifies whether to use lazy loading to import the handler.
    *
-   * @see https://v3.nuxtjs.org/guide/features/server-routes
+   * @see https://nuxt.com/docs/guide/directory-structure/server
    *
    * @note Files from `server/api`, `server/middleware` and `server/routes` will be automatically registered by Nuxt.
    *
@@ -56,7 +56,7 @@ export default defineUntypedSchema({
   /**
    * Nitro development-only server handlers.
    *
-   * @see https://nitro.unjs.io/guide/introduction/routing
+   * @see https://nitro.unjs.io/guide/routing
    *
    * @type {typeof import('nitropack')['NitroDevEventHandler'][]}
    */

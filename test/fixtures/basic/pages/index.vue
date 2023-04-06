@@ -7,18 +7,27 @@
     <div>RuntimeConfig | testConfig: {{ config.testConfig }}</div>
     <div>Composable | foo: {{ foo }}</div>
     <div>Composable | bar: {{ bar }}</div>
+    <div>Composable | template: {{ templateAutoImport }}</div>
+    <div>Composable | star: {{ useNestedBar() }}</div>
     <DevOnly>Some dev-only info</DevOnly>
     <div><DevOnly>Some dev-only info</DevOnly></div>
-    <div>Composable | template: {{ templateAutoImport }}</div>
     <div>Path: {{ $route.fullPath }}</div>
     <NuxtLink to="/">
       Link
     </NuxtLink>
-    <NestedSugarCounter :count="12" />
+    <NuxtLink to="/chunk-error" :prefetch="false">
+      Chunk error
+    </NuxtLink>
+    <button @click="someValue++">
+      Increment state
+    </button>
+    <NestedSugarCounter :multiplier="2" />
     <CustomComponent />
+    <Spin>Test</Spin>
     <component :is="`test${'-'.toString()}global`" />
     <component :is="`with${'-'.toString()}suffix`" />
     <ClientWrapped ref="clientRef" style="color: red;" class="client-only" />
+    <ServerOnlyComponent class="server-only" style="background-color: gray;" />
   </div>
 </template>
 
@@ -30,6 +39,8 @@ import { importedValue, importedRE } from '~/some-exports'
 setupDevtoolsPlugin({}, () => {}) as any
 
 const config = useRuntimeConfig()
+
+const someValue = useState('val', () => 1)
 
 definePageMeta({
   alias: '/some-alias',

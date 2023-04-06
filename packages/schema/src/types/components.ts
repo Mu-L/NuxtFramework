@@ -10,6 +10,12 @@ export interface Component {
   global?: boolean
   island?: boolean
   mode?: 'client' | 'server' | 'all'
+  /**
+   * This number allows configuring the behavior of overriding Nuxt components.
+   * If multiple components are provided with the same name, then higher priority
+   * components will be used instead of lower priority components.
+   */
+  priority?: number
 }
 
 export interface ScanDir {
@@ -39,13 +45,13 @@ export interface ScanDir {
    */
   enabled?: boolean
   /**
-   * These properties (prefetch/preload) are used in production to configure how components with Lazy prefix are handled by Webpack via its magic comments.
-   * Learn more on Webpack documentation: https://webpack.js.org/api/module-methods/#magic-comments
+   * These properties (prefetch/preload) are used in production to configure how components with Lazy prefix are handled by webpack via its magic comments.
+   * Learn more on webpack documentation: https://webpack.js.org/api/module-methods/#magic-comments
    */
   prefetch?: boolean
   /**
-   * These properties (prefetch/preload) are used in production to configure how components with Lazy prefix are handled by Webpack via its magic comments.
-   * Learn more on Webpack documentation: https://webpack.js.org/api/module-methods/#magic-comments
+   * These properties (prefetch/preload) are used in production to configure how components with Lazy prefix are handled by webpack via its magic comments.
+   * Learn more on webpack documentation: https://webpack.js.org/api/module-methods/#magic-comments
    */
   preload?: boolean
   /**

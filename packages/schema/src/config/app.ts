@@ -1,6 +1,6 @@
 import { defineUntypedSchema } from 'untyped'
-import defu from 'defu'
-import type { AppHeadMetaObject } from '../types/meta'
+import { defu } from 'defu'
+import type { AppHeadMetaObject } from '../types/head'
 
 export default defineUntypedSchema({
   /**
@@ -12,7 +12,7 @@ export default defineUntypedSchema({
      * @see [documentation](https://vuejs.org/api/application.html#app-config-compileroptions)
      * @type {typeof import('@vue/compiler-core').CompilerOptions}
      */
-    compilerOptions: {}
+    compilerOptions: {},
   },
 
   /**
@@ -75,8 +75,8 @@ export default defineUntypedSchema({
      *       { children: ':root { color: red }', type: 'text/css' }
      *     ],
      *     noscript: [
-     *       // <noscript>Javascript is required</noscript>
-     *       { children: 'Javascript is required' }
+     *       // <noscript>JavaScript is required</noscript>
+     *       { children: 'JavaScript is required' }
      *     ]
      *   }
      * }
@@ -164,6 +164,12 @@ export default defineUntypedSchema({
    * in the appropriate context.
    *
    * It can also be an object with `src` and `mode` keys.
+   *
+   * @note Plugins are also auto-registered from the `~/plugins` directory
+   * and these plugins do not need to be listed in `nuxt.config` unless you
+   * need to customize their order. All plugins are deduplicated by their src path.
+   *
+   * @see https://nuxt.com/docs/guide/directory-structure/plugins
    *
    * @example
    * ```js
